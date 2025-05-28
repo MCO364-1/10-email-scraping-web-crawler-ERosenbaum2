@@ -1,0 +1,16 @@
+HashSet<String> scrapedEmails = new HashSet<>();
+HashSet<String> scrapedWebPages = new HashSet<>();
+Queue<String> urlsToScrape = new LinkedList<>();
+
+urlsToScrape.add("https://touro.edu/");
+while (scrapedEmails.size < 10,000) {
+    String currentUrl = urlsToScrape.poll();
+    if (!scrapedWebPages.contains(currentUrl)) {
+        scrapedWebPages.add(currentUrl);
+        Get the links from the page using regex and add them to the queue.
+        Get the emails from the page using regex and add them to the scrapedEmails Set.
+    }
+}
+
+Once there are 10,000 emails in scrapedEmails:
+    Connect to database and insert all email addresses to the table.
