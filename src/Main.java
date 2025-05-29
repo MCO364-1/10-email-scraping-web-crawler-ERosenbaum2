@@ -1,3 +1,4 @@
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
@@ -13,6 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Main {
+    private static Properties props;
     private static List<String> urlsToVisit = Collections.synchronizedList(new LinkedList<>());
     private static Set<String> scrapedEmailAddresses = Collections.synchronizedSet(new HashSet<>());
     private static Set<String> scrapedUrls = Collections.synchronizedSet(new HashSet<>());
@@ -21,15 +23,12 @@ public class Main {
     private static int emailTarget = 10000;
     private static int numThreads = 16;
     private static String url = "https://touro.edu/";
-    private static String connectionUrl = "jdbc:sqlserver://database-1.ckxf3a0k0vuw.us-east-1.rds.amazonaws.com;"
-            + "database=XXXXXXXXX;"//Removed sensitive information
-            + "user=XXXXXXXXX;"
-            + "password=XXXXXXXXX;"
-            + "encrypt=true;"
-            + "trustServerCertificate=true;"
-            + "loginTimeout=30;";
+    private static String connectionUrl;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        props = new Properties();
+        props.load(new FileInputStream("config.properties"));
+        connectionUrl = props.getProperty("connection.url");
         urlsToVisit.add(url);
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
         for (int i = 0; i < numThreads; i++) {
